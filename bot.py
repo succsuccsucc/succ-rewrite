@@ -29,8 +29,7 @@ intents.guilds = True
 bot = commands.Bot(command_prefix=";", intents=intents, activity=discord.Game(name="Subway Surfers"), help_command=None)
 
 # Load cogs (extensions)
-initial_extensions = ['test', 'help',  # base commands
-    'pointless', 'leaderboard']  # pointless commands
+initial_extensions = ['test', 'pointless', 'leaderboard']
 # Load extensions listed above
 async def load_extensions():
     for extension in initial_extensions:
