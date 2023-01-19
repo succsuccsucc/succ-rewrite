@@ -8,7 +8,7 @@ from discord.ext import commands
 
 import os
 
-from transactions import item_count, find_item
+from transactions import item_count, find_item, find_emoji
 from config import color_info
 
 # Change working directory to wherever this is in
@@ -26,27 +26,30 @@ class ItemCog(commands.Cog):
         entry = find_item(item)
         
         if item is not None:
-            count_owned = item_count(ctx.author.id, ctx.guild.id, item)
+            count_owned = item_count(ctx.author.id, ctx.guild.id, entry['name'])
 
             embed_item = discord.Embed(title=entry['name'],
                 description=entry['description'],
                 color=color_info)
-            embed_item.add_field(name="Description", value=entry['detail'], inline=False)
+            
+            embed_item.set_thumbnail(url=find_emoji(entry['emoji']))
+
+            embed_item.add_field(name="ℹ️ Description", value=entry['detail'], inline=False)
 
             type_dict = {
-                "collect": "Normal",
-                "craft": "Crafted",
-                "shop": "Shop",
-                "discontinued": "Discontinued"
+                "collect": "🎁 Normal",
+                "craft": "⚒️ Crafted",
+                "shop": "🛍️ Shop",
+                "discontinued": "💀 Discontinued"
             }
-            embed_item.add_field(name="Type", value=type_dict[entry['type']], inline=True)
+            embed_item.add_field(name="📂 Type", value=type_dict[entry['type']], inline=True)
 
             if entry['type'] == "craft":
                 ingredient_field = ""
                 for key, value in entry['ingredients'].items():
                     in_emoji = find_item(key)['emoji']
                     ingredient_field += f"{in_emoji} {key}: {value}"
-                embed_item.add_field(name="Ingredients", value=ingredient_field, inline=True)
+                embed_item.add_field(name="🧾 Ingredients", value=ingredient_field, inline=True)
             elif entry['type'] == "shop":
                 curr_dict = {
                     "G": "Gold Ingot",
@@ -54,7 +57,7 @@ class ItemCog(commands.Cog):
                 }
                 embed_item.add_field(name="Price", value=f"{find_item(curr_dict[entry['currency']])['emoji']} {entry['price']}", inline=True)
             
-            embed_item.add_field(name="You have", value=str(count_owned), inline=False)
+            embed_item.add_field(name="🗄️ You have", value=str(count_owned), inline=False)
 
             await ctx.send(embed=embed_item)
         else:

@@ -2,6 +2,7 @@
 import os
 import json
 import random
+import re
 
 # Change working directory to wherever this is in
 abspath = os.path.abspath(__file__)
@@ -14,6 +15,7 @@ def open_lb():
     lb = json.load(lb)
     return lb
 
+# Open list of items
 def open_items():
     items = open('data/pointless_items.json', encoding='utf-8')
     items = json.load(items)
@@ -96,8 +98,20 @@ def item_count(id, guild_id, item):
     else:
         return user['inventory'][item]
 
+# Find the entry for an item from the list of items
 def find_item(item):
     items = open_items()
 
     item = next((i for i in items if i['name'].upper() == item.upper()), None)
     return item
+
+# Find the image URL for a custom emoji
+def find_emoji(emoji):
+    # Extract emoji ID
+    emoji_id = re.findall('\d+', emoji)[0]
+    # Determine if emoji is animated
+    if emoji[1] == 'a':
+        url = f"https://cdn.discordapp.com/emojis/{emoji_id}.gif"
+    else:
+        url = f"https://cdn.discordapp.com/emojis/{emoji_id}.png"
+    return url
