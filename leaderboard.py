@@ -19,7 +19,6 @@ class LeaderboardCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot: commands.Bot = bot
     
-    @commands.cooldown(1, 5, commands.BucketType.guild)
     @commands.guild_only()
     @commands.hybrid_command(aliases=['lb'])
     async def leaderboard(self, ctx):
@@ -50,9 +49,16 @@ class LeaderboardCog(commands.Cog):
         
         embed_lb.add_field(name="Rank", value=rank_field, inline=True)
         embed_lb.add_field(name="Username", value=name_field, inline=True)
-        embed_lb.add_field(name="Score", value=score_field, inline=True)
+        embed_lb.add_field(name="Points", value=score_field, inline=True)
 
-        embed_lb.set_footer(text=f"👤 {len(lb)}\n👷‍♀️ This bot is in early development! Player progress may be edited or removed without warning.")
+        embed_lb.add_field(name="😠 Where are my points?",
+            value="Your progress will be migrated from succ once the rewrite is ready!",
+            inline=False)
+        embed_lb.add_field(name="🌸 This bot is in early development!",
+            value=" Player progress may be edited or removed without warning.",
+            inline=False)
+
+        embed_lb.set_footer(text=f"👤 {len(lb)}")
 
         await ctx.send(embed=embed_lb)
 

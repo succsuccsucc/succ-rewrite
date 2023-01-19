@@ -4,6 +4,8 @@ import json
 import random
 import re
 
+import discord
+
 # Change working directory to wherever this is in
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -115,3 +117,15 @@ def find_emoji(emoji):
     else:
         url = f"https://cdn.discordapp.com/emojis/{emoji_id}.png"
     return url
+
+# Get currency count of a user
+def curr_count(id, guild_id):
+    lb, user = find_user(id, guild_id)
+
+    gold_count = user['inventory']['Gold Ingot']
+    amethyst_count = user['inventory']['Amethyst']
+
+    gold_emoji = find_item('Gold Ingot')['emoji']
+    amethyst_emoji = find_item('Amethyst')['emoji']
+
+    return f"{gold_emoji} {gold_count} | {amethyst_emoji} {amethyst_count}"
