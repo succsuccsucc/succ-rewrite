@@ -37,10 +37,10 @@ class ItemCog(commands.Cog):
             embed_item.add_field(name="ℹ️ Description", value=entry['detail'], inline=False)
 
             type_dict = {
-                "collect": "🎁 Normal",
-                "craft": "⚒️ Crafted",
-                "shop": "🛍️ Shop",
-                "discontinued": "💀 Discontinued"
+                "collect": "Normal",
+                "craft": "Crafted",
+                "shop": "Shop",
+                "discontinued": "Discontinued"
             }
             embed_item.add_field(name="📂 Type", value=type_dict[entry['type']], inline=True)
 
@@ -48,7 +48,7 @@ class ItemCog(commands.Cog):
                 ingredient_field = ""
                 for key, value in entry['ingredients'].items():
                     in_emoji = find_item(key)['emoji']
-                    ingredient_field += f"{in_emoji} {key}: {value}"
+                    ingredient_field += f"{in_emoji} {key}: {value}\n"
                 embed_item.add_field(name="🧾 Ingredients", value=ingredient_field, inline=True)
             elif entry['type'] == "shop":
                 curr_dict = {
