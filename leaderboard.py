@@ -29,6 +29,8 @@ class LeaderboardCog(commands.Cog):
             description="Get points by pressing the pointless button!",
             color=color_info)
         
+        embed_lb.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon.url)
+
         rank_field = ""
         name_field = ""
         score_field = ""
