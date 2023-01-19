@@ -52,7 +52,7 @@ class LeaderboardCog(commands.Cog):
         embed_lb.add_field(name="Username", value=name_field, inline=True)
         embed_lb.add_field(name="Score", value=score_field, inline=True)
 
-        embed_lb.set_footer(text=f"👤 {len(lb)}")
+        embed_lb.set_footer(text=f"👤 {len(lb)}\n👷‍♀️ This bot is in early development! Player progress may be edited or removed without warning.")
 
         await ctx.send(embed=embed_lb)
 
