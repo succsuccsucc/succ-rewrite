@@ -72,6 +72,12 @@ async def sync(ctx):
         await ctx.send("Commands synced!")
     else:
         await ctx.send("Impostor! You are not the chosen one!")
+
+@commands.guild_only()
+@bot.hybrid_command()
+async def headpat(ctx):
+    await ctx.send("You gave sphere a headpat. They seem happy.")
+    await ctx.send("https://tenor.com/bLeZU.gif")
 # Text commands end
 
 # Error handling
