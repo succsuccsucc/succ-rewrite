@@ -14,6 +14,11 @@ def open_lb():
     lb = json.load(lb)
     return lb
 
+def open_items():
+    items = open('data/pointless_items.json', encoding='utf-8')
+    items = json.load(items)
+    return items
+
 # Save the edited leaderboard to the file
 def save_lb(lb):
     # Sort the leaderboard by user score
@@ -73,8 +78,7 @@ def edit_user(id, guild_id, item, amount):
 
 # Draw item (for "pointless")
 def draw_item():
-    items = open('data/pointless_items.json', encoding='utf-8')
-    items = json.load(items)
+    items = open_items()
     collectibles = [f for f in items if f['type'] == 'collect']
 
     population = [tuple(d.values()) for d in collectibles]
@@ -82,3 +86,18 @@ def draw_item():
 
     chosen = random.choices(population=population, weights=weights, k=1)[0]
     return chosen[0], chosen[1]
+
+# Check number of specific item owned by a user
+def item_count(id, guild_id, item):
+    lb, user = find_user(id, guild_id)
+
+    if item not in user['inventory']:
+        return 0
+    else:
+        return user['inventory'][item]
+
+def find_item(item):
+    items = open_items()
+
+    item = next((i for i in items if i['name'].upper() == item.upper()), None)
+    return item
