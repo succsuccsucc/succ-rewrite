@@ -23,7 +23,8 @@ class LeaderboardCog(commands.Cog):
     @commands.guild_only()
     @commands.hybrid_command(aliases=['lb'])
     async def leaderboard(self, ctx):
-        lb = open_lb()
+        lb_file = open_lb()
+        lb = [d for d in lb_file if ctx.guild.id in d['guilds']]
 
         embed_lb = discord.Embed(title="📜 Leaderboard",
             description="Get points by pressing the pointless button!",

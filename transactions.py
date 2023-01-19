@@ -23,29 +23,38 @@ def save_lb(lb):
 
 # Add a new user to the leaderboard
 # Only called when the user is not on leaderboard already
-def new_profile(lb, id):
+def new_profile(lb, id, guild_id):
     new_user = {
         "id": id,
+        "guilds": [guild_id],
         "score": 0,
-        "inventory": {}
+        "inventory": {
+            "Gold Ingot": 0,
+            "Amethyst": 0
+        }
     }
     lb.append(new_user)
     return lb
 
 # Find inventory of user in leaderboard
-def find_user(id):
+def find_user(id, guild_id):
     lb = open_lb()
     user = next((item for item in lb if item["id"] == id), None)
 
+    # Create new profile for user if they're not found in the leaderboard
     if user == None:
-        lb = new_profile(lb, id)
+        lb = new_profile(lb, id, guild_id)
         user = next((item for item in lb if item["id"] == id), None)
+    
+    # Add current guild to user's guild list if guild not registered to user yet
+    if guild_id not in user['guilds']:
+        user['guilds'].append(guild_id)
     
     return lb, user
 
 # Edit score/inventory of user
-def edit_user(id, item, amount):
-    lb, user = find_user(id)
+def edit_user(id, guild_id, item, amount):
+    lb, user = find_user(id, guild_id)
     
     if item == 'score':
         user['score'] += amount

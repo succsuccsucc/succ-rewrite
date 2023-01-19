@@ -29,7 +29,7 @@ class PointlessButton(discord.ui.View):
         button.disabled = True
         await interaction.response.edit_message(view=self, content=f"👆 <@{interaction.user.id}> pressed the button!")
 
-        edit_user(interaction.user.id, 'score', 1)
+        edit_user(interaction.user.id, interaction.guild_id, 'score', 1)
 
 class PointlessCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
