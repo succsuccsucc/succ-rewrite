@@ -1,6 +1,7 @@
 # transactions.py
 import os
 import json
+import random
 
 # Change working directory to wherever this is in
 abspath = os.path.abspath(__file__)
@@ -69,3 +70,15 @@ def edit_user(id, guild_id, item, amount):
             user['inventory'][item] = 0
     
     save_lb(lb)
+
+# Draw item (for "pointless")
+def draw_item():
+    items = open('data/pointless_items.json', encoding='utf-8')
+    items = json.load(items)
+    collectibles = [f for f in items if f['type'] == 'collect']
+
+    population = [tuple(d.values()) for d in collectibles]
+    weights = [e['rarity'] for e in collectibles]
+
+    chosen = random.choices(population=population, weights=weights, k=1)[0]
+    return chosen[0], chosen[1]

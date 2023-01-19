@@ -7,8 +7,9 @@ from discord import app_commands
 from discord.ext import commands
 
 import os
+import random
 
-from transactions import edit_user
+from transactions import edit_user, draw_item
 
 # Change working directory to wherever this is in
 abspath = os.path.abspath(__file__)
@@ -27,9 +28,20 @@ class PointlessButton(discord.ui.View):
             return
         
         button.disabled = True
-        await interaction.response.edit_message(view=self, content=f"👆 <@{interaction.user.id}> pressed the button!")
 
+        await interaction.response.edit_message(view=self, content=f"👆 <@{interaction.user.id}> pressed the button!")
         edit_user(interaction.user.id, interaction.guild_id, 'score', 1)
+
+        # Draw item
+        if random.randint(0, 1) == 1:
+            item_name, item_emoji = draw_item()
+            if item_name == "Gold Ingot":
+                edit_user(interaction.user.id, interaction.guild_id, item_name, 5)
+                await interaction.channel.send(f"They got 5 {item_emoji} `{item_name}`!")
+            else:
+                edit_user(interaction.user.id, interaction.guild_id, item_name, 1)
+                await interaction.channel.send(f"They got 1 {item_emoji} `{item_name}`!")
+            
 
 class PointlessCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:

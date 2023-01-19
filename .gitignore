@@ -8,3 +8,4 @@ __pycache__/
 libopus.so.0.8.0
 # ignore leaderboard file
 data/pointless_leaderboard.json
+data/pointless_items.json
