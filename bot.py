@@ -30,7 +30,7 @@ bot = commands.Bot(command_prefix=";", intents=intents, activity=discord.Game(na
 
 # Load cogs (extensions)
 initial_extensions = ['test', 'help',  # base commands
-    'pointless', 'leaderboard', 'item', 'inventory']  # pointless commands
+    'pointless', 'leaderboard', 'item', 'inventory', 'craft']  # pointless commands
 # Load extensions listed above
 async def load_extensions():
     for extension in initial_extensions:
@@ -92,9 +92,9 @@ async def on_command_error(ctx, error):
         if error.retry_after > 60:
             cooldown_m = int(cooldown / 60)
             cooldown_s = int(cooldown % 60)
-            await ctx.send(f'Command on cooldown!\nTry again after `{cooldown_m}m {cooldown_s}s`.')
+            await ctx.send(f'⏳ Command on cooldown!\nTry again after `{cooldown_m}m {cooldown_s}s`.')
         else:
-            await ctx.send(f'Command on cooldown!\nTry again after `{cooldown}s`.')
+            await ctx.send(f'⏳ Command on cooldown!\nTry again after `{cooldown}s`.')
     
 # Launch bot
 async def main():
