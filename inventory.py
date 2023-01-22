@@ -19,6 +19,86 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
+# Calculate max page index
+def max_page(shown):
+    idx = int(len(shown) / 5)
+    # Edge case: if queue length is 0
+    if len(shown) == 0:
+        pass
+    # Edge case: if queue length is non-zero multiple of 5
+    elif len(shown) % 5 == 0:
+        idx -= 1
+    return idx
+
+# Compose list(page) of items to be shown
+def compose_inv(items, profile):
+    shown = []
+    for item in items:
+        if item['name'] in profile['inventory']:
+            new_show = {
+                "name": item['name'],
+                "emoji": item['emoji'],
+                "count": profile['inventory'][item['name']],
+                "desc": item['description']
+            }
+            shown.append(new_show)
+
+    return shown
+
+# Compose inventory display
+def compose_embed(shown, page, user, ctx):
+    embed_inv = discord.Embed(title="🗄️ Inventory",
+        description=curr_count(user.id, ctx.guild.id),
+        color=color_info)
+    embed_inv.set_author(name=user.display_name, icon_url=user.display_avatar.url)
+
+    try:
+        shown_slice = shown[5 * page: 5 * page + 5]
+    except IndexError:
+        shown_slice = shown[5 * page: -1]
+
+    for item in shown_slice:
+        embed_inv.add_field(name=f"{item['emoji']} {item['name']}: {item['count']}",
+            value=item['desc'],
+            inline=False)
+    
+    embed_inv.add_field(name="\u200b", value="\u200b", inline=False) 
+    embed_inv.add_field(name="😠 Where are my items?",
+        value="Your progress will be migrated from succ once the rewrite is ready!",
+        inline=False)
+    embed_inv.add_field(name="🌸 This bot is in early development!",
+        value="Player progress may be edited or removed without warning.",
+        inline=False)
+    
+    embed_inv.set_footer(text=f"📖 {page + 1}/{max_page(shown) + 1}")
+
+    return embed_inv
+
+# Compose page flip buttons
+class Page(discord.ui.View):
+    def __init__(self, *, timeout=180, shown=[], page=0, user=None, ctx=None):
+        super().__init__(timeout=timeout)
+        self.shown = shown
+        self.page = page
+        self.user = user
+        self.ctx = ctx
+
+    @discord.ui.button(label="⬅️", style=discord.ButtonStyle.gray)
+    async def previous_button(self,interaction:discord.Interaction, button:discord.ui.Button):
+        if self.page <= 0:
+            await interaction.response.send_message("🚫 You are already at the first page!", ephemeral=True)
+        else:
+            self.page -= 1
+            await interaction.response.edit_message(embed=compose_embed(self.shown, self.page, self.user, self.ctx), view=self)
+
+    @discord.ui.button(label="➡️", style=discord.ButtonStyle.gray)
+    async def next_button(self,interaction:discord.Interaction, button:discord.ui.Button):
+        if self.page >= max_page(self.shown):
+            await interaction.response.send_message("🚫 You are already at the last page!", ephemeral=True)
+        else:
+            self.page += 1
+            await interaction.response.edit_message(embed=compose_embed(self.shown, self.page, self.user, self.ctx), view=self)
+
 class InventoryCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot: commands.Bot = bot
@@ -34,29 +114,31 @@ class InventoryCog(commands.Cog):
             lb, profile = find_user(user.id, ctx.guild.id)
             items = open_items()
 
-            # Show currency on top
-            embed_inv = discord.Embed(title="🗄️ Inventory",
-                description=curr_count(user.id, ctx.guild.id),
-                color=color_info)
-            embed_inv.set_author(name=user.display_name, icon_url=user.display_avatar.url)
+            # # Show currency on top
+            # embed_inv = discord.Embed(title="🗄️ Inventory",
+            #     description=curr_count(user.id, ctx.guild.id),
+            #     color=color_info)
+            # embed_inv.set_author(name=user.display_name, icon_url=user.display_avatar.url)
 
-            for item in items:
-                if item['name'] in profile['inventory']:
-                    item_name = item['name']
-                    embed_inv.add_field(name=f"{item['emoji']} {item_name}: {profile['inventory'][item_name]}",
-                        value=item['description'],
-                        inline=False)
+            # for item in items:
+            #     if item['name'] in profile['inventory']:
+            #         item_name = item['name']
+            #         embed_inv.add_field(name=f"{item['emoji']} {item_name}: {profile['inventory'][item_name]}",
+            #             value=item['description'],
+            #             inline=False)
 
-            embed_inv.add_field(name="\u200b", value="\u200b", inline=False)
+            # embed_inv.add_field(name="\u200b", value="\u200b", inline=False)
             
-            embed_inv.add_field(name="😠 Where are my items?",
-                value="Your progress will be migrated from succ once the rewrite is ready!",
-                inline=False)
-            embed_inv.add_field(name="🌸 This bot is in early development!",
-                value="Player progress may be edited or removed without warning.",
-                inline=False)
+            # embed_inv.add_field(name="😠 Where are my items?",
+            #     value="Your progress will be migrated from succ once the rewrite is ready!",
+            #     inline=False)
+            # embed_inv.add_field(name="🌸 This bot is in early development!",
+            #     value="Player progress may be edited or removed without warning.",
+            #     inline=False)
 
-            await ctx.send(embed=embed_inv)
+            shown = compose_inv(items, profile)
+            await ctx.send(embed=compose_embed(shown, 0, user, ctx),
+                view=Page(shown=shown, page=0, user=user, ctx=ctx))
         else:
             await ctx.send("⚠️ Invalid username!") 
 
