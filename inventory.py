@@ -10,7 +10,7 @@ import typing
 
 import os
 
-from transactions import open_items, find_user, curr_count
+from transactions import open_items, find_user, curr_count, max_page
 from bot import get_user_object
 from config import color_info
 
@@ -19,16 +19,8 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-# Calculate max page index
-def max_page(shown):
-    idx = int(len(shown) / 5)
-    # Edge case: if queue length is 0
-    if len(shown) == 0:
-        pass
-    # Edge case: if queue length is non-zero multiple of 5
-    elif len(shown) % 5 == 0:
-        idx -= 1
-    return idx
+# Declare number of entries per page in inventory display
+page_size = 5
 
 # Compose list(page) of items to be shown
 def compose_inv(items, profile):
@@ -63,14 +55,14 @@ def compose_embed(shown, page, user, ctx):
             inline=False)
     
     embed_inv.add_field(name="\u200b", value="\u200b", inline=False) 
-    embed_inv.add_field(name="😠 Where are my items?",
-        value="Your progress will be migrated from succ once the rewrite is ready!",
+    embed_inv.add_field(name="😠 Item icons aren't showing!",
+        value='Enable "Use External Emojis" permission for the "everyone" role in this channel. [Source](https://www.reddit.com/r/Discord_Bots/comments/pj7iex/slash_commands_not_showing_external_emoji/)',
         inline=False)
     embed_inv.add_field(name="🌸 This bot is in early development!",
         value="Player progress may be edited or removed without warning.",
         inline=False)
     
-    embed_inv.set_footer(text=f"📖 {page + 1}/{max_page(shown) + 1}")
+    embed_inv.set_footer(text=f"📖 {page + 1}/{max_page(shown, page_size) + 1}")
 
     return embed_inv
 
@@ -93,7 +85,7 @@ class Page(discord.ui.View):
 
     @discord.ui.button(label="➡️", style=discord.ButtonStyle.gray)
     async def next_button(self,interaction:discord.Interaction, button:discord.ui.Button):
-        if self.page >= max_page(self.shown):
+        if self.page >= max_page(self.shown, page_size):
             await interaction.response.send_message("🚫 You are already at the last page!", ephemeral=True)
         else:
             self.page += 1

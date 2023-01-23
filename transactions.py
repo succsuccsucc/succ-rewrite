@@ -129,3 +129,14 @@ def curr_count(id, guild_id):
     amethyst_emoji = find_item('Amethyst')['emoji']
 
     return f"{gold_emoji} {gold_count} | {amethyst_emoji} {amethyst_count}"
+
+# Get maximum page of a list
+def max_page(list, page_size):
+    idx = int(len(list) / page_size)
+    # Edge case: if queue length is 0
+    if len(list) == 0:
+        pass
+    # Edge case: if queue length is non-zero multiple of 5
+    elif len(list) % page_size == 0:
+        idx -= 1
+    return idx
