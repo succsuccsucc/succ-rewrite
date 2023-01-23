@@ -53,8 +53,8 @@ class LeaderboardCog(commands.Cog):
         embed_lb.add_field(name="Username", value=name_field, inline=True)
         embed_lb.add_field(name="Points", value=score_field, inline=True)
 
-        embed_lb.add_field(name="😠 Where are my points?",
-            value="Your progress will be migrated from succ once the rewrite is ready!",
+        embed_lb.add_field(name="🌸 The rewrite is almost ready!",
+            value="Succ is now upgrading! Player progress will be migrated from sphere once their code is feature complete.",
             inline=False)
         embed_lb.add_field(name="🌸 This bot is in early development!",
             value=" Player progress may be edited or removed without warning.",

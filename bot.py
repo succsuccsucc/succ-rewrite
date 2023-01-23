@@ -26,7 +26,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 intents.guilds = True
-bot = commands.Bot(command_prefix=";", intents=intents, activity=discord.Game(name="Subway Surfers"), help_command=None)
+bot = commands.Bot(command_prefix=";", intents=intents, activity=discord.Game(name="Kirby and the Forgotten Land"), help_command=None)
 
 # Load cogs (extensions)
 initial_extensions = ['test', 'help',  # base commands
@@ -76,8 +76,8 @@ async def sync(ctx):
 @commands.guild_only()
 @bot.hybrid_command()
 async def headpat(ctx):
-    await ctx.send("You gave sphere a headpat. They seem happy.")
-    await ctx.send("https://tenor.com/bLeZU.gif")
+    await ctx.send("You gave succ a headpat. They seem happy.")
+    await ctx.send("https://tenor.com/bt99R.gif")
 # Text commands end
 
 # Error handling
