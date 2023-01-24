@@ -70,7 +70,7 @@ class BuyButton(discord.ui.View):
                 await interaction.channel.send(embed=embed_buy_fail)
         
         else:
-            await interaction.response.send_message(content="🚫 Impostor! You are not the one who knocked.")
+            await interaction.response.send_message(content="🚫 Impostor! You are not the one who knocked.", ephemeral=True)
 
 class BuyCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:

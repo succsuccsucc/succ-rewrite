@@ -30,7 +30,7 @@ bot = commands.Bot(command_prefix=";", intents=intents, activity=discord.Game(na
 
 # Load cogs (extensions)
 initial_extensions = ['test', 'help',  # base commands
-    'pointless', 'leaderboard', 'item', 'inventory', 'craft', 'shop', 'buy']  # pointless commands
+    'pointless', 'leaderboard', 'item', 'inventory', 'craft', 'shop', 'buy', 'trade']  # pointless commands
 # Load extensions listed above
 async def load_extensions():
     for extension in initial_extensions:
@@ -57,8 +57,11 @@ async def get_user_object(ping):
         except:
             return None
 
-    user = await bot.fetch_user(user_id)
-    return user
+    try:
+        user = await bot.fetch_user(user_id)
+        return user
+    except:
+        return None
 # Helper functions end
 
 # Text commands start

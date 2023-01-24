@@ -132,7 +132,7 @@ class InventoryCog(commands.Cog):
             await ctx.send(embed=compose_embed(shown, 0, user, ctx),
                 view=Page(shown=shown, page=0, user=user, ctx=ctx))
         else:
-            await ctx.send("⚠️ Invalid username!") 
+            await ctx.send("⚠️ User not found!") 
 
 # Setup function
 async def setup(bot):
