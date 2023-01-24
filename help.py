@@ -22,8 +22,13 @@ class HelpCog(commands.Cog):
         # "test" must always be at the bottom!
         embed_help.add_field(name="pointless", value="https://www.youtube.com/watch?v=EcSzq_6W1QQ", inline=False)
         embed_help.add_field(name="leaderboard/lb", value="Get a list of scores collected by each player!", inline=False)
+        embed_help.add_field(name="inventory/inv [username]", value="Check you or someone's inventory!", inline=False)
+        embed_help.add_field(name="item <item>", value="Get info on an item!", inline=False)
+        embed_help.add_field(name="craft <item> [count]", value="Craft items into another item!", inline=False)
+        embed_help.add_field(name="shop", value="Browse all items in the shop!", inline=False)
+        embed_help.add_field(name="buy <item> [amount]", value="Buy something from the shop!", inline=False)
+        embed_help.add_field(name="trade <username> <item(s) to offer> <count of each item> <item(s) to request> <count of each item>", value="Trade items with someone! Separate items and counts with comma and a space.", inline=False)
         embed_help.add_field(name="test", value="Test bot status!", inline=False)
-
         embed_help.set_footer(text="🌸 Commands start with / or ;")
 
         await ctx.send(embed=embed_help)
