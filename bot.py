@@ -30,7 +30,7 @@ bot = commands.Bot(command_prefix=";", intents=intents, activity=discord.Game(na
 
 # Load cogs (extensions)
 initial_extensions = ['test', 'help',  # base commands
-    'pointless', 'leaderboard', 'item', 'inventory', 'craft', 'shop', 'buy', 'trade']  # pointless commands
+    'pointless', 'leaderboard', 'item', 'inventory', 'craft', 'shop', 'buy', 'trade', 'use']  # pointless commands
 # Load extensions listed above
 async def load_extensions():
     for extension in initial_extensions:

@@ -4,8 +4,6 @@ import json
 import random
 import re
 
-import discord
-
 # Change working directory to wherever this is in
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
