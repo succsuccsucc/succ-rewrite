@@ -9,7 +9,9 @@ from discord.ext import commands
 import os
 
 from transactions import find_item, item_count
+
 from train_ticket import train_ticket
+from morbius_dvd import morbius_dvd
 
 # Change working directory to wherever this is in
 abspath = os.path.abspath(__file__)
@@ -28,13 +30,14 @@ class UseCog(commands.Cog):
             item = item_entry['name']
         
             usable_items = {
-                "Train Ticket": train_ticket
+                "Train Ticket": train_ticket,
+                "Morbius DVD": morbius_dvd
             }
 
             if item in usable_items:
                 # Check if user has the item
                 if item_count(ctx.author.id, ctx.guild.id, item) > 0:
-                    await usable_items[item](ctx, item)
+                    await usable_items[item](ctx)
                 else:
                     await ctx.send("🚫 You don't have the item!")
             else:

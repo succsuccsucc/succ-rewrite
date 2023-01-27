@@ -4,6 +4,9 @@ import json
 import random
 import re
 
+# Gold emoji string (I'm lazy)
+gold_emoji = "<:Gold_Ingot:1003537929525805197>"
+
 # Change working directory to wherever this is in
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)

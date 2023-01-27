@@ -1,4 +1,4 @@
-# train.py
+# train_ticket.py
 # Usage of item "Train Ticket"
 
 import discord
@@ -14,7 +14,7 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-async def train_ticket(ctx, *args):
+async def train_ticket(ctx):
     scenarios = [
         {
             "name": "Cult Ritual",
